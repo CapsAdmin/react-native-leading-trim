@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import { Text as RNText } from "react-native";
+import { Text as RNText, View } from "react-native";
 import { buildLeadingTrimStyle } from "./leading-trim";
-import { LeadingTrimFont } from "./leading-trim";
+import { LeadingTrimFont } from "../App";
 
 export const LeadingTrimmedText = (props: {
   size?: number;
@@ -9,6 +9,7 @@ export const LeadingTrimmedText = (props: {
 
   font: LeadingTrimFont;
   align?: "left" | "center" | "right";
+  noWrap?: boolean;
 
   noLeadingTrim?: boolean;
   lineGap?: number;
@@ -25,20 +26,24 @@ export const LeadingTrimmedText = (props: {
         props.baselineOffset ?? props.font.baselineOffset,
         props.ascenderOffset ?? props.font.ascenderOffset
       );
-
   return (
-    <RNText
-      allowFontScaling={false}
-      adjustsFontSizeToFit={false}
-      style={[
-        {
-          color: props.color,
-          textAlign: props.align,
-        },
-        leadingTrimStyle,
-      ]}
-    >
-      {props.children}
-    </RNText>
+    <View pointerEvents="none">
+      <RNText
+        selectable={false}
+        allowFontScaling={false}
+        adjustsFontSizeToFit={false}
+        numberOfLines={props.noWrap ? 1 : undefined}
+        style={[
+          {
+            fontFamily: props.font.fontFamily,
+            color: props.color,
+            textAlign: props.align,
+          },
+          leadingTrimStyle,
+        ]}
+      >
+        {props.children}
+      </RNText>
+    </View>
   );
 };

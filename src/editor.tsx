@@ -3,78 +3,42 @@ import React, { ReactNode, useState } from "react";
 import {
   Dimensions,
   PixelRatio,
-  Text as RNText,
+  Text as Text,
   View,
   ViewStyle,
 } from "react-native";
 import { Slider } from "./slider";
 import { LeadingTrimmedText } from "./text";
-import { SystemFont } from "./fonts";
-import type { LeadingTrimFont } from "./leading-trim";
+import type { LeadingTrimFont } from "../App";
 
 const Column = (props: { children: ReactNode; style?: ViewStyle }) => (
-  <View style={{ flexDirection: "column", ...props.style }}>
+  <View style={{ flexDirection: "column", padding: 5, ...props.style }}>
     {props.children}
   </View>
 );
 
 const Row = (props: { children: ReactNode; style?: ViewStyle }) => (
-  <View style={{ flexDirection: "row", ...props.style }}>{props.children}</View>
+  <View style={{ flexDirection: "row", padding: 5, ...props.style }}>
+    {props.children}
+  </View>
 );
 
-const BaselinePreview = (props: { fontFamily: string }) => {
-  const [baseLine, setBaseLine] = useState(0);
-
-  const SIZE = 30;
-  return (
-    <Column>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "baseline",
-        }}
-      >
-        <RNText
-          allowFontScaling={false}
-          adjustsFontSizeToFit={false}
-          style={{
-            fontFamily: props.fontFamily,
-            fontSize: SIZE,
-            lineHeight: SIZE,
-            color: "white",
-            backgroundColor: "black",
-            includeFontPadding: false,
-          }}
-        >
-          gyjq Q buik
-        </RNText>
-        <RNText
-          allowFontScaling={false}
-          adjustsFontSizeToFit={false}
-          onLayout={(e) => {
-            setBaseLine(e.nativeEvent.layout.y);
-          }}
-          style={{
-            transform: [{ scaleX: 100 }],
-            zIndex: 2,
-            fontFamily: props.fontFamily,
-            fontSize: SIZE,
-            lineHeight: 0.1,
-            color: "red",
-            backgroundColor: "red",
-            includeFontPadding: false,
-          }}
-        >
-          gyjq Q buik
-        </RNText>
-      </View>
-      <RNText style={{ color: "white" }}>
-        baseline for size ({SIZE}px / pixelratio) is close to{" "}
-        {baseLine / PixelRatio.get()}
-      </RNText>
-    </Column>
-  );
-};
+const Label = (props: {
+  font?: string;
+  size?: number;
+  children: ReactNode;
+}) => (
+  <Text
+    selectable={false}
+    style={{
+      fontFamily: props.font,
+      fontSize: props.size || 20,
+      color: "white",
+    }}
+  >
+    {props.children}
+  </Text>
+);
 
 const TextBoundsContainer = (props: { children: ReactNode }) => {
   const lineSize = 1 / PixelRatio.get();
@@ -119,7 +83,7 @@ const TextBoundsContainer = (props: { children: ReactNode }) => {
 
 export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
   const font = props.font;
-  const [size, setSize] = useState(20);
+  const [size, setSize] = useState(50);
 
   const [lineGapScale, setLineGapScale] = useState(font.lineGapScale);
   const [baselineOffset, setBaselineOffset] = useState(font.baselineOffset);
@@ -128,19 +92,17 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
   );
 
   return (
-    <Column style={{ backgroundColor: "rgba(0, 0, 0, 1)", padding: 10 }}>
-      <LeadingTrimmedText font={font} color="white" size={50}>
+    <Column style={{ backgroundColor: "black", padding: 20 }}>
+      <Label font={font.fontFamily} size={50}>
+        {" "}
         {font.fontFamily}
-      </LeadingTrimmedText>
-      <BaselinePreview fontFamily={font.fontFamily!} />
+      </Label>
       <Column>
-        <LeadingTrimmedText font={SystemFont} color="~white" size={20}>
-          size: {size}
-        </LeadingTrimmedText>
+        <Label font={font.fontFamily}> size: {size}</Label>
 
         <Slider
           min={0}
-          max={100}
+          max={200}
           step={1}
           value={size}
           onChange={(num) => {
@@ -150,9 +112,9 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
       </Column>
 
       <Column>
-        <LeadingTrimmedText font={SystemFont} color="white" size={20}>
+        <Label font={font.fontFamily}>
           line gap scale: {lineGapScale.toFixed(4)}
-        </LeadingTrimmedText>
+        </Label>
 
         <Slider
           min={0}
@@ -166,9 +128,9 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
       </Column>
 
       <Column>
-        <LeadingTrimmedText font={SystemFont} color="white" size={20}>
+        <Label font={font.fontFamily}>
           ascender offset: {ascenderOffset.toFixed(4)}
-        </LeadingTrimmedText>
+        </Label>
 
         <Slider
           min={0}
@@ -182,9 +144,9 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
       </Column>
 
       <Column>
-        <LeadingTrimmedText font={SystemFont} color="white" size={20}>
+        <Label font={font.fontFamily}>
           baseline offset: {baselineOffset.toFixed(4)}
-        </LeadingTrimmedText>
+        </Label>
 
         <Slider
           min={0}
@@ -207,37 +169,42 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
         <TextBoundsContainer>
           <LeadingTrimmedText
             align="center"
+            noWrap
             size={size}
             baselineOffset={baselineOffset}
             ascenderOffset={ascenderOffset}
             lineGap={lineGapScale}
-            font={props.font}
+            font={font}
             color="white"
           >
             gyjq
           </LeadingTrimmedText>
         </TextBoundsContainer>
+        <View style={{ width: size / 2 }}></View>
         <TextBoundsContainer>
           <LeadingTrimmedText
+            noWrap
             align="center"
             size={size}
             baselineOffset={baselineOffset}
             ascenderOffset={ascenderOffset}
             lineGap={lineGapScale}
-            font={props.font}
+            font={font}
             color="white"
           >
             Q
           </LeadingTrimmedText>
         </TextBoundsContainer>
+        <View style={{ width: size / 2 }}></View>
         <TextBoundsContainer>
           <LeadingTrimmedText
+            noWrap
             align="center"
             size={size}
             baselineOffset={baselineOffset}
             ascenderOffset={ascenderOffset}
             lineGap={lineGapScale}
-            font={props.font}
+            font={font}
             color="white"
           >
             buik
@@ -251,7 +218,7 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
           ascenderOffset={ascenderOffset}
           lineGap={lineGapScale}
           color="white"
-          font={SystemFont}
+          font={font}
         >
           {"b".repeat(
             Math.min(

@@ -652,7 +652,7 @@ const RailSelected = () => {
     />
   );
 };
-const THUMB_RADIUS = 12;
+const THUMB_RADIUS = 15;
 const Thumb = () => {
   return (
     <View

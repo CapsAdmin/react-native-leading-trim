@@ -4,13 +4,6 @@ import { PixelRatio, Platform, TextStyle } from "react-native"
 // https://medium.com/microsoft-design/leading-trim-the-future-of-digital-typesetting-d082d84b202
 // https://css-tricks.com/how-to-tame-line-height-in-css/
 
-export type LeadingTrimFont = {
-	fontFamily: string,
-	ascenderOffset: number,
-	baselineOffset: number,
-	lineGapScale: number,
-}
-
 type ReverseLineHeightCenteringFunc = (
 	fontSize: number,
 	baseline: number,
@@ -35,15 +28,23 @@ const reverseLineHeightCenteringIOS: ReverseLineHeightCenteringFunc = (
 	let marginTop = 0
 	let marginBottom = 0
 
-	if (lineGapScale < 0.4) {
+	const magic = fontSize / 18
+
+	paddingTop += magic;
+	marginTop -= magic;
+	marginBottom -= magic
+
+
+	if (lineGapScale < 0.45) {
 		// not sure if this line jump thing is correct
 		// it prevents the
-		const lineJumpPrevent = baseLineMultiplier * 2
+		const lineJumpPrevent = baseLineMultiplier
 
-		const offset = -(lineHeight - (fontSize + (baseline / 2 + lineJumpPrevent)))
-		paddingTop = offset
-		marginBottom = -offset / 2
-		marginTop = -offset
+		let offset = -(lineHeight - (fontSize + (baseline / 2 + lineJumpPrevent)))
+
+		paddingTop += offset
+		marginBottom += -offset / 2
+		marginTop += -offset
 	}
 
 	return { paddingTop, marginTop, marginBottom, lineHeight }
@@ -114,9 +115,18 @@ const reverseLineHeightCenteringOther: ReverseLineHeightCenteringFunc = (
 	baseLineMultiplier
 ) => {
 	let lineHeight = Math.max(fontSize - baseline + lineGap, 0.0001)
+	let lineGapScale = lineGap / fontSize
+
 	let paddingTop = 0
 	let marginTop = 0
 	let marginBottom = 0
+	const offset = baseline / 2
+
+	const a = (1 / 200) * 3 * fontSize
+
+	paddingTop = offset
+	marginTop = -offset + (a * -1)
+	marginBottom = -offset + (a * -2)
 
 	return { paddingTop, marginTop, marginBottom, lineHeight }
 }
@@ -134,7 +144,7 @@ export const buildLeadingTrimStyle = (
 ): TextStyle => {
 	ascenderOffset = ascenderOffset ?? baselineOffset
 
-	baselineOffset = 50 / PixelRatio.get() / baselineOffset
+	baselineOffset = 50 / (2.625) / baselineOffset
 	ascenderOffset = ascenderOffset * ((1 / 50) * fontSize)
 
 	let lineGap = (lineGapScale - 1) * fontSize
