@@ -222,7 +222,7 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
         >
           {"b".repeat(
             Math.min(
-              Math.max(((Dimensions.get("screen").width * 2) / size) * 2, 1),
+              Math.max(((Dimensions.get("screen").width * 4) / size) * 2, 1),
               1000
             )
           )}

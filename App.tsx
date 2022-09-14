@@ -16,15 +16,15 @@ const fonts: LeadingTrimFont[] = [
   {
     fontFamily: "Nunito-Black",
     resource: require("./assets/fonts/Nunito-Black.ttf"),
-    ascenderOffset: 18.31,
-    baselineOffset: 16.62,
+    ascenderOffset: 13.03,
+    baselineOffset: 14.488,
     lineGapScale: 1.25,
   },
   {
     fontFamily: "Nunito-Light",
     resource: require("./assets/fonts/Nunito-Light.ttf"),
-    ascenderOffset: 19.01,
-    baselineOffset: 16.83,
+    ascenderOffset: 13.03,
+    baselineOffset: 14.488,
     lineGapScale: 1.25,
   },
   {
