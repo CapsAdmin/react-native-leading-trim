@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@capsizecss/metrics": "^0.3.0",
     "@expo/webpack-config": "^0.17.0",
     "@types/react": "~18.0.0",
     "@types/react-native": "~0.69.1",
@@ -17,6 +18,7 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.5",
+    "react-native-capsize": "^0.2.2",
     "react-native-web": "~0.18.7",
     "typescript": "^4.6.3"
   },

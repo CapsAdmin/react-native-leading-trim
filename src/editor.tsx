@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { ReactNode, useState } from "react";
 import {
+  Button,
   Dimensions,
   PixelRatio,
   Text as Text,
@@ -91,14 +92,18 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
     font.ascenderOffset || font.baselineOffset
   );
 
+  const [stategy, setStrategy] = useState<"none" | "capsize" | "custom">(
+    "capsize"
+  );
+
   return (
     <Column style={{ backgroundColor: "black", padding: 20 }}>
       <Label font={font.fontFamily} size={50}>
-        {" "}
         {font.fontFamily}
       </Label>
+
       <Column>
-        <Label font={font.fontFamily}> size: {size}</Label>
+        <Label font={font.fontFamily}>size: {size}</Label>
 
         <Slider
           min={0}
@@ -159,6 +164,17 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
         />
       </Column>
 
+      <Button
+        color={"grey"}
+        onPress={() => {
+          const strategies = ["none", "capsize", "custom"] as const;
+          const index = strategies.indexOf(stategy);
+          const nextIndex = (index + 1) % strategies.length;
+          setStrategy(strategies[nextIndex]);
+        }}
+        title={"strategy = " + stategy}
+      ></Button>
+
       <Row
         style={{
           flexWrap: "wrap",
@@ -175,6 +191,7 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
             ascenderOffset={ascenderOffset}
             lineGap={lineGapScale}
             font={font}
+            strategy={stategy}
             color="white"
           >
             gyjq
@@ -190,6 +207,7 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
             ascenderOffset={ascenderOffset}
             lineGap={lineGapScale}
             font={font}
+            strategy={stategy}
             color="white"
           >
             Q
@@ -205,6 +223,7 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
             ascenderOffset={ascenderOffset}
             lineGap={lineGapScale}
             font={font}
+            strategy={stategy}
             color="white"
           >
             buik
@@ -218,6 +237,7 @@ export const LeadingTrimEditor = (props: { font: LeadingTrimFont }) => {
           ascenderOffset={ascenderOffset}
           lineGap={lineGapScale}
           color="white"
+          strategy={stategy}
           font={font}
         >
           {"b".repeat(

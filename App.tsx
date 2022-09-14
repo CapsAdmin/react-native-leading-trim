@@ -1,15 +1,22 @@
-import { StatusBar } from "expo-status-bar";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { LeadingTrimEditor } from "./src/editor";
 import { useFonts } from "expo-font";
 import React from "react";
-
+import { ScrollView, Text, View } from "react-native";
+import { LeadingTrimEditor } from "./src/editor";
 export type LeadingTrimFont = {
   fontFamily: string;
   resource: string;
   ascenderOffset: number;
   baselineOffset: number;
   lineGapScale: number;
+  metrics: {
+    familyName: string;
+    capHeight: number;
+    ascent: number;
+    descent: number;
+    lineGap: number;
+    unitsPerEm: number;
+    xHeight: number;
+  };
 };
 
 const fonts: LeadingTrimFont[] = [
@@ -19,6 +26,7 @@ const fonts: LeadingTrimFont[] = [
     ascenderOffset: 13.03,
     baselineOffset: 14.488,
     lineGapScale: 1.25,
+    metrics: require("@capsizecss/metrics/nunito"),
   },
   {
     fontFamily: "Nunito-Light",
@@ -26,6 +34,7 @@ const fonts: LeadingTrimFont[] = [
     ascenderOffset: 13.03,
     baselineOffset: 14.488,
     lineGapScale: 1.25,
+    metrics: require("@capsizecss/metrics/nunito"),
   },
   {
     fontFamily: "Roboto-Regular",
@@ -33,6 +42,7 @@ const fonts: LeadingTrimFont[] = [
     ascenderOffset: 12.25,
     baselineOffset: 13.95,
     lineGapScale: 1.25,
+    metrics: require("@capsizecss/metrics/roboto"),
   },
   {
     fontFamily: "Roboto-Thin",
@@ -40,6 +50,7 @@ const fonts: LeadingTrimFont[] = [
     ascenderOffset: 12.25,
     baselineOffset: 13.95,
     lineGapScale: 1.25,
+    metrics: require("@capsizecss/metrics/roboto"),
   },
   {
     fontFamily: "Roboto-Black",
@@ -47,6 +58,7 @@ const fonts: LeadingTrimFont[] = [
     ascenderOffset: 12.25,
     baselineOffset: 13.95,
     lineGapScale: 1.25,
+    metrics: require("@capsizecss/metrics/roboto"),
   },
   {
     fontFamily: "Tangerine-Regular",
@@ -54,6 +66,7 @@ const fonts: LeadingTrimFont[] = [
     ascenderOffset: 11.169,
     baselineOffset: 15.93,
     lineGapScale: 1.25,
+    metrics: require("@capsizecss/metrics/tangerine"),
   },
 ];
 
