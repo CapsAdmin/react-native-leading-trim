@@ -21,7 +21,6 @@ export const LeadingTrimmedText = (props: {
   const leadingTrimStyle = props.noLeadingTrim
     ? undefined
     : buildLeadingTrimStyle(
-        props.font.fontFamily,
         props.size,
         props.lineGap ?? props.font.lineGapScale,
         props.baselineOffset ?? props.font.baselineOffset,
